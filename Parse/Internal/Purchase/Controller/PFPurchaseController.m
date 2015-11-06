@@ -202,8 +202,13 @@
 }
 
 - (NSString *)assetContentPathForProductWithIdentifier:(NSString *)identifier fileName:(NSString *)fileName {
+#if TARGET_OS_TV
+    // We store files locally at (Caches)/(Parse)/(ProductIdentifier)/filename
+    NSString *filePath = [self.dataSource.fileManager parseCacheItemPathForPathComponent:identifier];
+#else
     // We store files locally at (ParsePrivateDir)/(ProductIdentifier)/filename
     NSString *filePath = [self.dataSource.fileManager parseDataItemPathForPathComponent:identifier];
+#endif
     filePath = [filePath stringByAppendingPathComponent:fileName];
     return filePath;
 }
